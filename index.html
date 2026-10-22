@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f7f4ef">
+
 <title>Угадай персонажа</title>
 
 <style>
@@ -21,9 +22,18 @@
 
   body {
     margin: 0;
-    background: #f7f4ef;
+    min-height: 100vh;
+    background:
+      #f7f4ef
+      url("images/bg.png")
+      center / cover
+      no-repeat fixed;
     color: var(--ink);
-    font-family: ui-rounded, "Trebuchet MS", Arial, sans-serif;
+    font-family:
+      ui-rounded,
+      "Trebuchet MS",
+      Arial,
+      sans-serif;
   }
 
   button {
@@ -88,7 +98,7 @@
     aspect-ratio: 1.42;
     border-radius: 11px;
     overflow: hidden;
-    background: #f3eee8;
+    background: white;
   }
 
   .portrait img {
@@ -96,6 +106,17 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
+  }
+
+  .portrait.image-missing {
+    display: grid;
+    place-items: center;
+    color: #b4a6c8;
+    font-size: 42px;
+  }
+
+  .portrait.image-missing::after {
+    content: "?";
   }
 
   .hero-name {
@@ -428,6 +449,7 @@
 </head>
 
 <body>
+
 <div class="app">
   <main class="layout" aria-label="Угадай персонажа">
 
@@ -486,9 +508,9 @@
 
   <ol>
     <li>
-      Один игрок закрывает глаза. Второй один раз
-      нажимает на героя: компьютер запоминает выбор
-      без выделения карточки.
+      Один игрок закрывает глаза.
+      Второй один раз нажимает на героя:
+      компьютер запоминает выбор без выделения карточки.
     </li>
 
     <li>
@@ -545,7 +567,10 @@
       Продолжить раунд
     </button>
 
-    <button class="button primary" id="confirmReset">
+    <button
+      class="button primary"
+      id="confirmReset"
+    >
       Новая игра
     </button>
   </div>
@@ -555,31 +580,30 @@
 "use strict";
 
 /*
-  ВАШИ КАРТИНКИ:
-  images/01.png — images/16.png
+  Все изображения находятся в папке images
+  рядом с файлом index.html.
 
-  name — имя под карточкой.
-  image — путь к картинке.
-  Остальные параметры нужны временным портретам.
+  Фон: images/bg.png
+  Герои: images/01.png — images/16.png
 */
 
 const HEROES = [
-  {id:1, name:"Аня", image:"images/01.png", hair:"#e8bd68", style:"long", eyes:"#699899", shirt:"#b39ccc", glasses:false},
-  {id:2, name:"Миша", image:"images/02.png", hair:"#674737", style:"short", eyes:"#807050", shirt:"#8bb6cc", glasses:true},
-  {id:3, name:"Соня", image:"images/03.png", hair:"#b95f39", style:"buns", eyes:"#7e9a68", shirt:"#d8a3ac", glasses:false},
-  {id:4, name:"Лёва", image:"images/04.png", hair:"#e9c576", style:"short", eyes:"#7a9cba", shirt:"#a6b995", glasses:false},
-  {id:5, name:"Даша", image:"images/05.png", hair:"#4e3933", style:"long", eyes:"#806b51", shirt:"#ddb77c", glasses:true},
-  {id:6, name:"Тим", image:"images/06.png", hair:"#b85e38", style:"curly", eyes:"#789a72", shirt:"#b4a3ce", glasses:false},
-  {id:7, name:"Ева", image:"images/07.png", hair:"#e7c475", style:"buns", eyes:"#7c9db2", shirt:"#97bdbc", glasses:true},
-  {id:8, name:"Рома", image:"images/08.png", hair:"#4b3732", style:"short", eyes:"#6c5449", shirt:"#d4a08a", glasses:false},
-  {id:9, name:"Кира", image:"images/09.png", hair:"#986242", style:"buns", eyes:"#89a079", shirt:"#98accc", glasses:false},
-  {id:10, name:"Саша", image:"images/10.png", hair:"#e6be73", style:"curly", eyes:"#92a29a", shirt:"#d8ad87", glasses:true},
-  {id:11, name:"Лиза", image:"images/11.png", hair:"#b7623c", style:"long", eyes:"#8396ab", shirt:"#bba4ca", glasses:true},
-  {id:12, name:"Ваня", image:"images/12.png", hair:"#956647", style:"short", eyes:"#6b9b8a", shirt:"#9cbbad", glasses:false},
-  {id:13, name:"Мила", image:"images/13.png", hair:"#e9c773", style:"long", eyes:"#8b9f78", shirt:"#d9a8af", glasses:false},
-  {id:14, name:"Костя", image:"images/14.png", hair:"#513e36", style:"curly", eyes:"#899aab", shirt:"#c6b281", glasses:true},
-  {id:15, name:"Зоя", image:"images/15.png", hair:"#4d3732", style:"buns", eyes:"#75917b", shirt:"#95bdb6", glasses:true},
-  {id:16, name:"Петя", image:"images/16.png", hair:"#bb693f", style:"short", eyes:"#836c50", shirt:"#9cadc5", glasses:false}
+  { id: 1, name: "Аня", image: "images/01.png" },
+  { id: 2, name: "Миша", image: "images/02.png" },
+  { id: 3, name: "Соня", image: "images/03.png" },
+  { id: 4, name: "Лёва", image: "images/04.png" },
+  { id: 5, name: "Даша", image: "images/05.png" },
+  { id: 6, name: "Тим", image: "images/06.png" },
+  { id: 7, name: "Ева", image: "images/07.png" },
+  { id: 8, name: "Рома", image: "images/08.png" },
+  { id: 9, name: "Кира", image: "images/09.png" },
+  { id: 10, name: "Саша", image: "images/10.png" },
+  { id: 11, name: "Лиза", image: "images/11.png" },
+  { id: 12, name: "Ваня", image: "images/12.png" },
+  { id: 13, name: "Мила", image: "images/13.png" },
+  { id: 14, name: "Костя", image: "images/14.png" },
+  { id: 15, name: "Зоя", image: "images/15.png" },
+  { id: 16, name: "Петя", image: "images/16.png" }
 ];
 
 const STORAGE_KEY = "guess-character-v1";
@@ -590,65 +614,69 @@ const freshState = () => ({
   phase: "choose",
   secretId: null,
   excluded: [],
-  history: [],
   guessId: null
 });
 
+const buttons = new Map();
+
 let state = loadState();
 
-const buttons = new Map();
+/* Сохранение текущего раунда */
 
 function loadState() {
   try {
-    const s = JSON.parse(
+    const saved = JSON.parse(
       sessionStorage.getItem(STORAGE_KEY)
     );
 
     const validId = id =>
-      HEROES.some(h => h.id === id);
+      HEROES.some(hero => hero.id === id);
 
     if (
-      !s ||
-      !["choose", "ready", "play", "ended"].includes(s.phase)
+      !saved ||
+      !["choose", "ready", "play", "ended"].includes(saved.phase)
     ) {
       return freshState();
     }
 
-    if (s.phase === "choose") {
+    if (saved.phase === "choose") {
       return freshState();
     }
 
     if (
-      !validId(s.secretId) ||
-      !Array.isArray(s.excluded) ||
-      s.excluded.some(id => !validId(id)) ||
-      new Set(s.excluded).size !== s.excluded.length ||
-      s.excluded.length > 15
+      !validId(saved.secretId) ||
+      !Array.isArray(saved.excluded)
     ) {
       return freshState();
     }
 
     if (
-      s.phase === "ended" &&
+      saved.excluded.some(id => !validId(id)) ||
+      new Set(saved.excluded).size !== saved.excluded.length ||
+      saved.excluded.length >= HEROES.length
+    ) {
+      return freshState();
+    }
+
+    if (
+      saved.phase === "ended" &&
       (
-        !validId(s.guessId) ||
-        s.excluded.length !== 15 ||
-        s.excluded.includes(s.guessId)
+        !validId(saved.guessId) ||
+        saved.excluded.length !== HEROES.length - 1 ||
+        saved.excluded.includes(saved.guessId)
       )
     ) {
       return freshState();
     }
 
     return {
-      phase: s.phase,
-      secretId: s.secretId,
-      excluded: s.excluded,
-      history: Array.isArray(s.history)
-        ? s.history.filter(validId)
-        : [],
-      guessId: s.phase === "ended"
-        ? s.guessId
-        : null
+      phase: saved.phase,
+      secretId: saved.secretId,
+      excluded: saved.excluded,
+      guessId:
+        saved.phase === "ended"
+          ? saved.guessId
+          : null
     };
   } catch {
     return freshState();
@@ -662,182 +690,83 @@ function saveState() {
       JSON.stringify(state)
     );
   } catch {
-    // Игра работает и при недоступном хранилище.
+    // Игра продолжает работать без сохранения раунда.
   }
 }
 
-/* Временные портреты */
+/* Загрузка портрета */
 
-function fallbackPortrait(h) {
-  const bg = [
-    "#eee6f4",
-    "#e5eff0",
-    "#f5e8df",
-    "#e9eee2"
-  ][(h.id - 1) % 4];
-
-  const long = h.style === "long"
-    ? `<path d="M46 64Q41 18 80 18Q120 18 114 65L119 111H40Z" fill="${h.hair}"/>`
-    : "";
-
-  const buns = h.style === "buns"
-    ? `<circle cx="47" cy="35" r="18" fill="${h.hair}"/><circle cx="113" cy="35" r="18" fill="${h.hair}"/>`
-    : "";
-
-  const top = h.style === "curly"
-    ? `<path d="M47 54Q33 37 48 30Q45 15 61 19Q70 7 81 17Q96 8 101 22Q120 18 119 36Q128 48 111 57L108 38H53Z" fill="${h.hair}"/>`
-    : `<path d="M46 57Q39 17 80 17Q121 17 114 57L107 41Q84 46 68 34Q58 48 49 49Z" fill="${h.hair}"/>`;
-
-  const glasses = h.glasses
-    ? `<g fill="none" stroke="#63536c" stroke-width="3">
-        <rect x="54" y="53" width="22" height="17" rx="7"/>
-        <rect x="84" y="53" width="22" height="17" rx="7"/>
-        <path d="M76 60H84M49 58H54M106 58H111"/>
-      </g>`
-    : "";
-
-  const freckles = h.id % 3 === 0
-    ? `<g fill="#d99c80">
-        <circle cx="60" cy="73" r="1.4"/>
-        <circle cx="65" cy="71" r="1.3"/>
-        <circle cx="98" cy="73" r="1.4"/>
-        <circle cx="94" cy="71" r="1.3"/>
-      </g>`
-    : "";
-
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg"
-         width="160" height="136"
-         viewBox="0 0 160 136">
-
-      <rect width="160" height="136" fill="${bg}"/>
-
-      ${long}
-      ${buns}
-
-      <path d="M29 140Q31 102 67 99H93Q129 101 132 140"
-            fill="${h.shirt}"/>
-
-      <path d="M69 88V103Q80 113 91 103V88"
-            fill="#edbd9a"/>
-
-      <ellipse cx="48" cy="63" rx="6" ry="9"
-               fill="#f4caaa"/>
-
-      <ellipse cx="112" cy="63" rx="6" ry="9"
-               fill="#f4caaa"/>
-
-      <ellipse cx="80" cy="60" rx="32" ry="39"
-               fill="#f6d0b0"/>
-
-      ${top}
-
-      <path d="M59 49Q64 46 70 49M91 49Q97 46 102 49"
-            stroke="${h.hair}" fill="none"
-            stroke-width="2.5"
-            stroke-linecap="round"/>
-
-      <ellipse cx="65" cy="61" rx="3.2" ry="4.4"
-               fill="${h.eyes}"/>
-
-      <ellipse cx="96" cy="61" rx="3.2" ry="4.4"
-               fill="${h.eyes}"/>
-
-      <circle cx="66" cy="60" r="1" fill="white"/>
-      <circle cx="97" cy="60" r="1" fill="white"/>
-
-      <ellipse cx="58" cy="75" rx="7" ry="4"
-               fill="#eca996" opacity=".5"/>
-
-      <ellipse cx="103" cy="75" rx="7" ry="4"
-               fill="#eca996" opacity=".5"/>
-
-      ${freckles}
-
-      <path d="M79 65L77 73H82"
-            fill="none" stroke="#dcaa8a"
-            stroke-width="1.6"
-            stroke-linecap="round"/>
-
-      <path d="M71 82Q80 90 90 81"
-            fill="none" stroke="#ae6b64"
-            stroke-width="2.2"
-            stroke-linecap="round"/>
-
-      ${glasses}
-
-      <path d="M62 106L72 117L80 111L89 117L99 105"
-            fill="none" stroke="white"
-            stroke-opacity=".55"
-            stroke-width="3"/>
-    </svg>
-  `;
-
-  return (
-    "data:image/svg+xml;charset=utf-8," +
-    encodeURIComponent(svg)
-  );
-}
-
-function portrait(h) {
+function portrait(hero) {
   const wrap = document.createElement("span");
   wrap.className = "portrait";
 
   const img = document.createElement("img");
   img.alt = "";
   img.draggable = false;
-  img.src = fallbackPortrait(h);
 
-  if (h.image) {
-    const candidate = new Image();
+  img.addEventListener(
+    "error",
+    () => {
+      img.remove();
 
-    candidate.onload = () => {
-      img.src = h.image;
-    };
+      wrap.classList.add("image-missing");
 
-    candidate.src = h.image;
-  }
+      wrap.setAttribute(
+        "aria-label",
+        "Не удалось загрузить портрет"
+      );
+    },
+    { once: true }
+  );
+
+  img.src = hero.image;
 
   wrap.append(img);
 
   return wrap;
 }
 
-/* Поле */
+/* Создание 16 карточек */
 
 function buildBoard() {
-  for (const h of HEROES) {
+  for (const hero of HEROES) {
     const button = document.createElement("button");
+
     button.type = "button";
     button.className = "hero";
-    button.dataset.id = h.id;
+    button.dataset.id = hero.id;
 
-    const label = document.createElement("span");
-    label.className = "hero-name";
-    label.textContent = h.name;
+    const name = document.createElement("span");
+    name.className = "hero-name";
+    name.textContent = hero.name;
 
     const cross = document.createElement("span");
     cross.className = "cross";
     cross.textContent = "×";
     cross.setAttribute("aria-hidden", "true");
 
-    button.append(portrait(h), label, cross);
+    button.append(
+      portrait(hero),
+      name,
+      cross
+    );
 
     button.addEventListener("click", () => {
-      clickHero(h.id, button);
+      clickHero(hero.id, button);
     });
 
     $("grid").append(button);
-    buttons.set(h.id, button);
+
+    buttons.set(hero.id, button);
   }
 }
 
-/* Выбор и закрытие карточек */
+/* Тайный выбор и закрытие карточек */
 
 function clickHero(id, button) {
   if (
-    state.phase === "ended" ||
-    state.phase === "ready"
+    state.phase === "ready" ||
+    state.phase === "ended"
   ) {
     return;
   }
@@ -846,6 +775,7 @@ function clickHero(id, button) {
     state.secretId = id;
     state.phase = "ready";
 
+    // Выбранный герой не выделяется.
     button.blur();
 
     saveState();
@@ -858,30 +788,22 @@ function clickHero(id, button) {
 
   if (index >= 0) {
     state.excluded.splice(index, 1);
-
-    state.history = state.history.filter(
-      item => item !== id
-    );
   } else if (
-    state.excluded.length === HEROES.length - 1
+    state.excluded.length < HEROES.length - 1
   ) {
-    $("status").textContent =
-      "Остался последний герой. Нажмите «Угадал!».";
-
-    return;
-  } else {
     state.excluded.push(id);
-    state.history.push(id);
+  } else {
+    return;
   }
 
   saveState();
   render();
 }
 
-/* Обновление экрана */
+/* Обновление интерфейса */
 
 function render() {
-  const remainingCount =
+  const remaining =
     HEROES.length - state.excluded.length;
 
   const ended = state.phase === "ended";
@@ -890,35 +812,37 @@ function render() {
     ended &&
     state.guessId === state.secretId;
 
-  for (const h of HEROES) {
-    const button = buttons.get(h.id);
-    const excluded = state.excluded.includes(h.id);
+  for (const hero of HEROES) {
+    const button = buttons.get(hero.id);
+
+    const closed = state.excluded.includes(hero.id);
 
     button.classList.toggle(
       "eliminated",
-      excluded
+      closed
     );
 
     button.classList.toggle(
       "solution",
-      ended && h.id === state.secretId
+      ended && hero.id === state.secretId
     );
 
     button.disabled =
       ended || state.phase === "ready";
 
     button.setAttribute(
-      "aria-label",
-      h.name + (
-        excluded
-          ? ", карточка закрыта"
-          : ", карточка открыта"
-      )
+      "aria-pressed",
+      String(closed)
     );
 
     button.setAttribute(
-      "aria-pressed",
-      String(excluded)
+      "aria-label",
+      hero.name +
+      (
+        closed
+          ? ", карточка закрыта"
+          : ", карточка открыта"
+      )
     );
   }
 
@@ -928,7 +852,7 @@ function render() {
     state.phase !== "ready" &&
     (
       state.phase !== "play" ||
-      remainingCount !== 1
+      remaining !== 1
     );
 
   guess.textContent =
@@ -947,6 +871,7 @@ function render() {
   );
 
   const slot = $("secret");
+
   slot.replaceChildren();
 
   if (!ended) {
@@ -963,6 +888,7 @@ function render() {
     );
 
     const seal = document.createElement("span");
+
     seal.className = "seal";
     seal.textContent = "?";
     seal.setAttribute("aria-hidden", "true");
@@ -974,13 +900,13 @@ function render() {
         ? "Выберите героя, пока второй игрок не смотрит."
         : state.phase === "ready"
           ? "Герой загадан. Нажмите «Передать ход»."
-          : remainingCount === 1
+          : remaining === 1
             ? "Остался один герой. Нажмите «Угадал!»."
             : "Задавайте вопросы и закрывайте неподходящих героев.";
 
   } else {
     const hero = HEROES.find(
-      h => h.id === state.secretId
+      item => item.id === state.secretId
     );
 
     slot.className = "secret-slot revealed";
@@ -990,13 +916,15 @@ function render() {
       "Был загадан персонаж: " + hero.name
     );
 
-    slot.append(portrait(hero));
-
     const name = document.createElement("span");
+
     name.className = "secret-name";
     name.textContent = hero.name;
 
-    slot.append(name);
+    slot.append(
+      portrait(hero),
+      name
+    );
 
     $("status").textContent =
       (win ? "Да, угадали! " : "Ответ не совпал. ") +
@@ -1005,7 +933,7 @@ function render() {
   }
 }
 
-/* Передача хода и проверка */
+/* Передача хода и проверка ответа */
 
 $("guess").addEventListener("click", () => {
   if (state.phase === "ready") {
@@ -1018,7 +946,7 @@ $("guess").addEventListener("click", () => {
   }
 
   const remaining = HEROES.filter(
-    h => !state.excluded.includes(h.id)
+    hero => !state.excluded.includes(hero.id)
   );
 
   if (
@@ -1074,10 +1002,11 @@ document.querySelectorAll("[data-close]").forEach(
   }
 );
 
-/* Запуск */
+/* Запуск игры */
 
 buildBoard();
 render();
 </script>
+
 </body>
 </html>
